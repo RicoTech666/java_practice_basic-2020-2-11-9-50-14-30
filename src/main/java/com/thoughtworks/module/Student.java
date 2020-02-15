@@ -6,33 +6,47 @@ import java.util.Date;
 
 public class Student {
     private String name;
-    private int studentId;
+    private String studentId;
     private String registrationDate;
 
-    public Student(String name, int studentId, String registrationDate) {
+    public Student(String name, String studentId, String registrationDate) {
         this.name = name;
         this.studentId = studentId;
         this.registrationDate = registrationDate;
     }
 
-    public String processRegistrationDate() throws ParseException {
-        SimpleDateFormat sdfOld = new SimpleDateFormat(registrationDate);
-        Date date = sdfOld.parse(registrationDate);
-        SimpleDateFormat sdfNew = new SimpleDateFormat("yyyy年mm月dd日");
+    private String processRegistrationDate() {
+        SimpleDateFormat sdfOld = new SimpleDateFormat("yyyy.MM.dd");
+        Date date = null;
+        try {
+            date = sdfOld.parse(registrationDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat sdfNew = new SimpleDateFormat("yyyy年MM月dd日");
         return sdfNew.format(date);
     }
 
-    public int computeEnrollmentYear() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(registrationDate);
-        Date date = sdf.parse(registrationDate);
+    private int computeEnrollmentYear() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        Date date = null;
+        try {
+            date = sdf.parse(registrationDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Date currentDate = new Date();
-        return (int) (currentDate.getTime() - date.getTime()) / (365 * 24 * 60 * 1000);
+        double msPerYear = 1000 * 60 * 60 * 24 * 365D;
+        System.out.println(msPerYear);
+        assert date != null;
+        return (int) Math.round((currentDate.getTime() - date.getTime()) / msPerYear);
     }
 
     @Override
     public String toString() {
-        StringBuilder info = new StringBuilder("我叫").append(name).append("，我的学号是").append(studentId).append("，")
-                .append(processRegistrationDate()).append("入学，学龄").append(computeEnrollmentYear()).append("年");
-        System.out.println(info);
+
+        return "我叫" + name + "，我的学号是" + studentId + "，" +
+                processRegistrationDate() + "入学，学龄" + computeEnrollmentYear() + "年";
     }
+
 }
