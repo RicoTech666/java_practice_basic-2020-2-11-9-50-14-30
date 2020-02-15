@@ -3,16 +3,32 @@ package com.thoughtworks.module;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Student {
     private String name;
     private String studentId;
     private String registrationDate;
 
+    public Student() {
+    }
+
     public Student(String name, String studentId, String registrationDate) {
         this.name = name;
         this.studentId = studentId;
         this.registrationDate = registrationDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getRegistrationDate() {
+        return registrationDate;
     }
 
     private String processRegistrationDate() {
@@ -37,7 +53,6 @@ public class Student {
         }
         Date currentDate = new Date();
         double msPerYear = 1000 * 60 * 60 * 24 * 365D;
-        System.out.println(msPerYear);
         assert date != null;
         return (int) Math.round((currentDate.getTime() - date.getTime()) / msPerYear);
     }
@@ -49,4 +64,11 @@ public class Student {
                 processRegistrationDate() + "入学，学龄" + computeEnrollmentYear() + "年";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(studentId, student.studentId);
+    }
 }
